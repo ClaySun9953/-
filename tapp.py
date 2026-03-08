@@ -193,42 +193,52 @@ st.markdown("""
     }
 
 
-    /* ================= 重点修复：下拉框和输入框被截断的致命Bug ================= */
+    /* ================= 重点修复：下拉框和输入框被截断的致命Bug + 字体颜色 ================= */
 
-    /* 1. 修复文本和数字输入框 */
-    .stTextInput input, .stNumberInput input {
+    /* 1. 修复文本输入框（修改输入账号时的字体颜色） */
+    .stTextInput input {
         background-color: rgba(17, 34, 64, 0.9) !important;
         border: 1px solid rgba(0, 168, 232, 0.4) !important;
-        color: #ccd6f6 !important;
-        font-size: clamp(20px, 1.8vw, 24px) !important; /* 字体放大 */
-        font-weight: 600 !important;
+        color: #64ffda !important; 
+        font-size: clamp(20px, 1.8vw, 24px) !important; 
+        font-weight: 800 !important; 
         border-radius: 8px !important;
         padding: 12px 15px !important; 
-        min-height: 52px !important;   /* 强制最低高度，给大字留足空间 */
+        min-height: 52px !important;   
+    }
+    
+    /* 其他普通数字输入框保持浅白色 */
+    .stNumberInput input {
+        background-color: rgba(17, 34, 64, 0.9) !important;
+        border: 1px solid rgba(0, 168, 232, 0.4) !important;
+        color: #ffffff !important;
+        font-size: clamp(20px, 1.8vw, 24px) !important;
+        font-weight: 800 !important;
+        border-radius: 8px !important;
+        padding: 12px 15px !important; 
+        min-height: 52px !important;  
     }
 
-    /* 2. 修复下拉框 (Selectbox) 被压扁的问题 */
+    /* 2. 修复下拉框 (Selectbox) 被压扁的问题及内部字体颜色 */
     div[data-baseweb="select"] > div {
         background-color: rgba(17, 34, 64, 0.9) !important;
         border: 1px solid rgba(0, 168, 232, 0.4) !important;
         border-radius: 8px !important;
-        min-height: 54px !important; /* 核心：强制撑开下拉框的高度，不再切断文字 */
+        min-height: 54px !important; 
     }
     div[data-baseweb="select"] span {
-        color: #ccd6f6 !important;
-        font-size: clamp(20px, 1.8vw, 24px) !important; /* 放大选项文字 */
-        font-weight: 600 !important;
+        color: #ffffff !important; /* 强制下拉框选中的文字为纯白 */
+        font-size: clamp(20px, 1.8vw, 24px) !important; 
+        font-weight: 800 !important;
     }
 
     /* 3. 放大输入框/下拉框上方的标题文字 */
     .stTextInput>label, .stSelectbox>label, .stNumberInput>label {
-        color: #ccd6f6 !important;
-        font-size: clamp(22px, 2vw, 26px) !important; /* 标题文字极其醒目 */
+        color: #64ffda !important; /* 统一改为高亮青色 */
+        font-size: clamp(22px, 2vw, 26px) !important; 
         font-weight: 800 !important;
         padding-bottom: 8px !important;
     }
-
-    /* ========================================================================= */
 
 
     /* 登录框样式 */
@@ -251,6 +261,18 @@ st.markdown("""
     .js-plotly-plot .plotly { background: transparent !important; }
     [data-testid="stHorizontalBlock"] { gap: 1rem !important; }
     [data-testid="stMetric"] { padding: 0.5rem !important; }
+
+    /* ================= 重点修复：二级界面（如张伟等基础信息）字体太浅的问题 ================= */
+    [data-testid="stMetricLabel"] p {
+        color: #64ffda !important; /* "船员姓名" 等标签改为高亮青色 */
+        font-size: 18px !important;
+        font-weight: 800 !important;
+    }
+    [data-testid="stMetricValue"] div {
+        color: #ffffff !important; /* "张伟" 等具体数值改为纯白并加粗 */
+        font-size: clamp(28px, 3vw, 36px) !important;
+        font-weight: 800 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
