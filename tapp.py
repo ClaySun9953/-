@@ -568,6 +568,7 @@ def dashboard_page(crew_list, warning_list, device_list):
         warning_show_df.columns = ["船员姓名", "所属船舶", "异常指标", "异常数值", "预警级别", "预警时间", "处理状态"]
         st.markdown(warning_show_df.to_html(escape=False, index=False, classes="dataframe"), unsafe_allow_html=True)
 
+# ========= 更新布局的 monitor_page =========
 def monitor_page(crew_list):
     st.markdown('<div class="main-header">实时生理监测 · 多传感器数据采集</div>', unsafe_allow_html=True)
     user_role = st.session_state.user_info["role"]
@@ -578,19 +579,21 @@ def monitor_page(crew_list):
         filter_data = [x for x in crew_list if x["name"] == crew_name]
         st.info(f"当前仅展示您（{st.session_state.user_info['show_name']}）的生理监测数据")
 
-    col1, col2, _ = st.columns([2, 2, 8], gap="medium")
+    # ========= 将原来的两列合并为一列，让按钮自动到下拉框下方 =========
+    col1, _ = st.columns([2, 10], gap="medium") 
     with col1:
         if user_role == "admin":
             ship_list = ["全部"] + SHIP_LIST
             selected_ship = st.selectbox("选择船舶", ship_list)
             if selected_ship != "全部":
                 filter_data = [x for x in filter_data if x["ship_name"] == selected_ship]
-    with col2:
-        if user_role == "admin":
-            st.markdown('<div style="margin-top: 42px;"></div>', unsafe_allow_html=True)
-            
+        
+        # 给按钮增加10像素的顶部间距，防止和下拉框贴得太紧
+        st.markdown('<div style="margin-top: 10px;"></div>', unsafe_allow_html=True)
+        
         if st.button("🔄 刷新实时数据", type="primary", use_container_width=True):
             refresh_data()
+    # ========================================================================
 
     st.markdown('<div class="data-card"><div class="section-title">船员实时生理数据列表</div></div>', unsafe_allow_html=True)
     if filter_data:
