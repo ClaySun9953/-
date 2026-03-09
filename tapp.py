@@ -226,10 +226,18 @@ st.markdown("""
         border-radius: 8px !important;
         min-height: 54px !important; 
     }
+    div[data-baseweb="select"] * {
+        color: #ffffff !important; /* 强制下拉框及内部所有文字（如"全部"）为纯白 */
+    }
     div[data-baseweb="select"] span {
-        color: #ffffff !important; /* 强制下拉框选中的文字为纯白 */
         font-size: clamp(20px, 1.8vw, 24px) !important; 
         font-weight: 800 !important;
+    }
+    /* 修复下拉菜单弹出后的选项列表背景和字体看不清的问题 */
+    ul[data-baseweb="menu"] li {
+        background-color: #0a192f !important;
+        color: #ffffff !important;
+        font-size: 18px !important;
     }
 
     /* 3. 放大输入框/下拉框上方的标题文字 */
@@ -578,6 +586,9 @@ def monitor_page(crew_list):
             if selected_ship != "全部":
                 filter_data = [x for x in filter_data if x["ship_name"] == selected_ship]
     with col2:
+        if user_role == "admin":
+            st.markdown('<div style="margin-top: 42px;"></div>', unsafe_allow_html=True)
+            
         if st.button("🔄 刷新实时数据", type="primary", use_container_width=True):
             refresh_data()
 
@@ -626,13 +637,13 @@ def warning_page(warning_list):
         st.markdown(f'<div class="data-card"><div class="card-label">累计预警总数</div><div class="card-value">{len(warning_list) + 1200}</div><div class="card-desc">本月新增 300 条</div></div>', unsafe_allow_html=True)
     with col2:
         high_count = len([x for x in warning_list if x["warning_level"] == 3])
-        st.markdown(f'<div class="data-card"><div class="card-label">重度预警</div><div class="card-value">{high_count + 125}</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="data-card"><div class="card-label">重度预警</div><div class="card-value">{high_count + 125}</div><div class="card-desc">&nbsp;</div></div>', unsafe_allow_html=True)
     with col3:
         mid_count = len([x for x in warning_list if x["warning_level"] == 2])
-        st.markdown(f'<div class="data-card"><div class="card-label">中度预警</div><div class="card-value">{mid_count + 450}</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="data-card"><div class="card-label">中度预警</div><div class="card-value">{mid_count + 450}</div><div class="card-desc">&nbsp;</div></div>', unsafe_allow_html=True)
     with col4:
         light_count = len([x for x in warning_list if x["warning_level"] == 1])
-        st.markdown(f'<div class="data-card"><div class="card-label">轻度预警</div><div class="card-value">{light_count + 670}</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="data-card"><div class="card-label">轻度预警</div><div class="card-value">{light_count + 670}</div><div class="card-desc">&nbsp;</div></div>', unsafe_allow_html=True)
 
     filter_col1, filter_col2, filter_col3 = st.columns(3, gap="medium")
     with filter_col1: selected_level = st.selectbox("预警级别", ["全部", "轻度预警", "中度预警", "重度预警"])
